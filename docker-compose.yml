@@ -1,0 +1,37 @@
+version: "3.3"
+
+services:
+    app:
+        container_name: app
+        build: ./app
+        ports: 
+            - "3003:3000"
+        depends_on: 
+            - api
+
+    api:
+        container_name: api
+        build: ./api
+        ports: 
+            - "4000:4000"
+        expose:
+            - "4000"
+        depends_on:
+            - db
+
+    
+    db:
+        container_name: db
+        image: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: mypass
+            MYSQL_DATABASE: db
+            MYSQL_SECURE_FILE_PRIV: 
+        volumes:
+            - ./data:/var/lib/mysql
+        ports:
+            - "3306"
+        expose:
+            - "3306"
+        command: --secure_file_priv=""
+
